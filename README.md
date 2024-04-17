@@ -53,3 +53,5 @@ Dakie/mongolian-xlm-roberta-base
 https://github.com/nghuyong/Chinese-text-correction-papers
 https://github.com/bedapudi6788/deepcorrect
 https://github.com/shibing624/pycorrector
+
+https://huggingface.co/shibing624/macbert4csc-base-chinese
