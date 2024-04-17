@@ -48,3 +48,8 @@ Dakie/finetuned-xlm-roberta-large
 Dakie/mongolian-bert-base-multilingual-cased
 Dakie/mongolian-roberta-base-mn
 Dakie/mongolian-xlm-roberta-base
+
+
+https://github.com/nghuyong/Chinese-text-correction-papers
+https://github.com/bedapudi6788/deepcorrect
+https://github.com/shibing624/pycorrector
