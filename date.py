@@ -262,3 +262,23 @@ with open('mask.pickle', 'wb') as f:
 # tttt 6916 个句子在错误集合中但是和同行的正确集合一样
 # onesenhavemulerrors = 0   #22883 含有多个错误的句子
 # senlenserr = 0  #34  经过简单分词后长度不一致的句子，因为":"
+
+
+
+errDist=[]
+norDisr=[]
+a = 0
+for i in MASK:
+    for h in i['word']:
+        if a == 0:
+            norDisr.append(h)
+            a = 1
+        else:
+            errDist.append(h)
+            a = 0
+with open('err.txt', 'a') as f:
+    for i in errDist:
+        if i in wordsDict:
+            # 结果写入文件
+            f.write(str(wordsDict[i]) + '\n')
+            print(wordsDict[i])
