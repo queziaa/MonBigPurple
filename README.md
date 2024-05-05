@@ -1,8 +1,8 @@
 @ https://huggingface.co/bayartsogt/mongolian-gpt2
 https://huggingface.co/Dorjzodovsuren/mongolian-gpt2
 @ https://huggingface.co/flax-community/mongolian-gpt2
-Baljinnyam/mongolian-gpt2-ner-finetuning
-Baljinnyam/mongolian-gpt-2
+@ https://huggingface.co/Baljinnyam/mongolian-gpt2-ner-finetuning
+@ https://huggingface.co/Baljinnyam/mongolian-gpt-2
 Baljinnyam/gpt-2-10000
 Baljinnyam/gpt-2-2000
 Baljinnyam/gpt-2
