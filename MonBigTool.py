@@ -134,7 +134,7 @@ class MonBigTool:
         llll = len(word)
         out = []
         wordDict = self.getWordsDict()
-        for i in tqdm(wordDict):
+        for i in wordDict:
             if IS_levenshtein_distance_and_operations(word,i,llll):
                 out.append(i)
         return out
@@ -446,8 +446,8 @@ def IS_levenshtein_distance_and_operations(s1, s2,s1len=None):
     if dif > 1:
         return False
     
-    if s1len+len(s2) <= 3:
-        return True
+    # if s1len+len(s2) <= 3:
+        # return True
     
 
     if not s2.isalpha():
