@@ -1,5 +1,55 @@
 import pickle
 import math
+import torch
+from tqdm import tqdm
+
+class Mondata:
+    def __init__(self):
+        print("Mondata")
+    
+    def cleanse(sen):
+
+
+        temp = sen.split(" ")
+        sen = []
+        for j in range(len(temp)):
+            # print(temp)
+            # print('*',temp[j],'*')
+            if len(temp[j]) == 0:
+                continue
+            if temp[j][-1] == ":":
+                sen.append(temp[j][:-1])
+                sen.append(":")
+            else:
+                sen.append(temp[j])
+
+        for j in range(len(sen)):
+            # 如果单词含有“:”且不是最后一个元素
+            if sen[j].find(":") != -1 and sen[j][-1] != ":":
+                # sen[j]位置赋予删除“:”后的单词
+                sen[j] = sen[j].replace(":", "")
+                # sen[j]之后插入“:”
+                sen.insert(j+1, ":")
+
+
+
+        tol = 0  #79791
+        indexx = 0
+        tempDict = {}
+        tempDict['sen'] = ''
+        tempDict['word'] = []
+        templist = []
+        if indexx != 0:
+            # 深拷贝
+            tempDict['sen'] = clean[i].copy()
+            for j in range(len(templist)):
+                tempDict['sen'][templist[j]] = '<>'
+            return tempDict
+
+
+
+
+
 
 class MonBigTool:
     def __init__(self):
@@ -60,6 +110,7 @@ class MonBigTool:
         wordDict = self.getWordsDict()
         for index in range(len(ma_i['sen'])):
             if ma_i['sen'][index] == '<>':
+                ma_i['sen'][index] = '[MASK]'
                 Tsum += 1
                 inode.append(index)
                 temp = (Tsum-1) * 2
@@ -79,6 +130,14 @@ class MonBigTool:
         sen = ma_i['sen']
         return inode,tsen,fsen,sen,freq,pairs
     
+    def FuzzySearch(self,word):
+        llll = len(word)
+        out = []
+        wordDict = self.getWordsDict()
+        for i in tqdm(wordDict):
+            if IS_levenshtein_distance_and_operations(word,i,llll):
+                out.append(i)
+        return out
 
 
 
@@ -192,6 +251,9 @@ class MASKmodel:
         return outputs.logits
                 
 
+    def token_count(self,_input):
+        return [len(self.tokenizer.tokenize(word)) for word in _input]
+
     def tomask(self,_input,predQuery,model):
 
         # 使用分词器将输入文本转换为模型可以接受的格式
@@ -203,7 +265,7 @@ class MASKmodel:
             outputs = self.model(**inputs)
 
         # 获取每个词对应的token数量
-        word_token_counts = [len(self.tokenizer.tokenize(word)) for word in _input]
+        word_token_counts = self.token_count(_input)
 
         out = []
         token_index = 1
@@ -242,6 +304,14 @@ class MASKmodel:
                     predicted_tokens_four = [token.replace("▁", "") for token in predicted_tokens_four]
                     predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_four,predicted_scores,predicted_scores_four)
 
+                if count == 5:
+                    predicted_token_ids_five = torch.topk(outputs.logits[..., token_index + 4, :], predQuery, dim=-1).indices[0]
+                    predicted_scores_five = torch.topk(outputs.logits[..., token_index + 4, :], predQuery, dim=-1).values[0]
+                    predicted_tokens_five = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_five)
+                    predicted_tokens_five = [token.replace("▁", "") for token in predicted_tokens_five]
+                    predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_five,predicted_scores,predicted_scores_five)
+
+
             out.append(predicted_tokens)
 
             # 更新token索引
@@ -257,8 +327,36 @@ class MASKmodel:
         return -1
     
 
+    def AttFix(self,fsen,WINDOW,index):
+        temp2 = self.tomask(fsen,WINDOW,True)
+        TTEMP = []
+        i = index
+        for j in temp2[i]:
+            if IS_levenshtein_distance_and_operations(fsen[i],j):
+                TTEMP.append(j)
+            if len(TTEMP) == WINDOW:
+                break
+        return TTEMP
+    
+
+
+
+
 
 def cross(Alist, Blist, Ascor, Bscor):
+    #Softmax 
+
+    if isinstance(Ascor, torch.Tensor):
+        Ascor = Ascor.numpy()
+    if isinstance(Bscor, torch.Tensor):
+        Bscor = Bscor.numpy()
+# softmax
+    Ascor = [math.exp(i) for i in Ascor]
+    Bscor = [math.exp(i) for i in Bscor]
+    Ascor = [i/sum(Ascor) for i in Ascor]
+    Bscor = [i/sum(Bscor) for i in Bscor]
+
+
     Alist_copy = Alist
     Ascor_copy = [i*2 for i in Ascor]
 
@@ -275,8 +373,10 @@ def cross(Alist, Blist, Ascor, Bscor):
     OUTlist = [a + b for a in Alist for b in Blist]
     OUTscor = [Ascor[i] + Bscor[j] for i in range(len(Ascor)) for j in range(len(Bscor))]
 
+
     OUTlist = OUTlist + Alist_copy
     OUTscor = OUTscor + Ascor_copy
+
 
     # 对于OUTlist中的重复 是得它们的OUTscor相加
     score_dict = {}
@@ -285,10 +385,8 @@ def cross(Alist, Blist, Ascor, Bscor):
             score_dict[OUTlist[i]] += OUTscor[i]
         else:
             score_dict[OUTlist[i]] = OUTscor[i]
-
     # 根据分数排序
     OUTlist, OUTscor = zip(*sorted(score_dict.items(), key=lambda x: x[1], reverse=True))
-
     return list(OUTlist), list(OUTscor)
 
 
@@ -339,14 +437,27 @@ def levenshtein_distance_and_operations(s1, s2):
 
 
 
-def IS_levenshtein_distance_and_operations(s1, s2):
-    if len(s1)+len(s2) <= 3:
+def IS_levenshtein_distance_and_operations(s1, s2,s1len=None):
+    if s1len == None:
+        s1len = len(s1)
+
+    dif = abs(s1len-len(s2))
+    
+    if dif > 1:
+        return False
+    
+    if s1len+len(s2) <= 3:
         return True
-    temp = levenshtein_distance_and_operations(s1, s2)
+    
+
     if not s2.isalpha():
         return False
+    
     if letterSim(s1,s2) < 0.7:
         return False
+    
+    temp = levenshtein_distance_and_operations(s1, s2)
+
     if temp[3] == 1:
         if temp[2] == 0 and temp[1] == 0:
             return True
@@ -382,7 +493,6 @@ def letterSim(A,B):
     lediff = abs(len(A) - len(B))
     te = (le - sum + math.exp(-lediff)) / le  
     # if te > 1:
-    #     print(A,B,te)
     return  te
 
 
@@ -396,3 +506,6 @@ def senAvg(sen):
     
     # 计算并返回平均长度
     return total_length / num_sen
+
+
+
