@@ -133,6 +133,7 @@ class MonBigTool:
     def FuzzySearch(self,word):
         llll = len(word)
         out = []
+        outs = []
         wordDict = self.getWordsDict()
         for i in wordDict:
             if wordDict[i] < 427:
@@ -141,7 +142,13 @@ class MonBigTool:
                 continue
             if IS_levenshtein_distance_and_operations(word,i,llll,1):
                 out.append(i)
-        return out
+                outs.append(wordDict[i])
+        # 归一化outs
+        if len(outs) > 0:
+            maxs = max(outs)
+            for i in range(len(outs)):
+                outs[i] = outs[i] / maxs
+        return out,outs
 
     def mysterious(self,sen):
         return sen == hidden_string
@@ -331,10 +338,10 @@ class MASKmodel:
 
 
 
-    def hybridPrediction(self,fsen,wordindex,WINDOW,candidate):
+    def hybridPrediction(self,fsen,wordindex,WINDOW,candidate,score):
         fsen = fsen.copy()
         Target = fsen[wordindex]
-        accumulation = torch.zeros(5,1,32000)
+        accumulation = {}
         candidate.append(Target)
         candidate.append('[MASK]')
         for new in candidate:
@@ -344,48 +351,55 @@ class MASKmodel:
             token_index = sum(word_token_counts[0:wordindex])+1
             token_length = word_token_counts[wordindex]
             logits = self.tomask_hid(fsen)
-            for i in range(token_length):
-                accumulation[i] = logits[..., token_index+i, :]
+            # for i in range(token_length):
+                # accumulation[i] = logits[..., token_index+i, :]
 
 
-        predicted_token_ids = torch.topk(accumulation[0], WINDOW, dim=-1).indices[0]
-        predicted_scores = torch.topk(accumulation[0], WINDOW, dim=-1).values[0]
-        
+            predicted_token_ids = torch.topk(logits[..., token_index+0, :], WINDOW, dim=-1).indices[0]
+            predicted_scores = torch.topk(logits[..., token_index+0, :], WINDOW, dim=-1).values[0]
+            predicted_tokens = self.tokenizer.convert_ids_to_tokens(predicted_token_ids)
+            predicted_tokens = [token.replace("▁", "") for token in predicted_tokens]
+            if token_length == 2:
+                predicted_token_ids_two = torch.topk(logits[..., token_index+1, :], WINDOW, dim=-1).indices[0]
+                predicted_scores_two = torch.topk(logits[..., token_index+1, :], WINDOW, dim=-1).values[0]
+                predicted_tokens_two = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_two)
+                predicted_tokens_two = [token.replace("▁", "") for token in predicted_tokens_two]
+                predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_two,predicted_scores,predicted_scores_two)
+            if token_length == 3:
+                predicted_token_ids_three = torch.topk(logits[..., token_index+2, :], WINDOW, dim=-1).indices[0]
+                predicted_scores_three = torch.topk(logits[..., token_index+2, :], WINDOW, dim=-1).values[0]
+                predicted_tokens_three = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_three)
+                predicted_tokens_three = [token.replace("▁", "") for token in predicted_tokens_three]
+                predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_three,predicted_scores,predicted_scores_three)
+            if token_length == 4:
+                predicted_token_ids_four = torch.topk(logits[..., token_index+3, :], WINDOW, dim=-1).indices[0]
+                predicted_scores_four = torch.topk(logits[..., token_index+3, :], WINDOW, dim=-1).values[0]
+                predicted_tokens_four = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_four)
+                predicted_tokens_four = [token.replace("▁", "") for token in predicted_tokens_four]
+                predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_four,predicted_scores,predicted_scores_four)
+            if token_length == 5:
+                predicted_token_ids_five = torch.topk(logits[..., token_index+4, :], WINDOW, dim=-1).indices[0]
+                predicted_scores_five = torch.topk(logits[..., token_index+4, :], WINDOW, dim=-1).values[0]
+                predicted_tokens_five = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_five)
+                predicted_tokens_five = [token.replace("▁", "") for token in predicted_tokens_five]
+                predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_five,predicted_scores,predicted_scores_five)
+            for i in range(len(predicted_tokens)):
+                if predicted_tokens[i] in accumulation:
+                    accumulation[predicted_tokens[i]] += predicted_scores[i]
+                else:
+                    accumulation[predicted_tokens[i]] = predicted_scores[i]
 
-        predicted_tokens = self.tokenizer.convert_ids_to_tokens(predicted_token_ids)
-        predicted_tokens = [token.replace("▁", "") for token in predicted_tokens]
-
-        # accumulation[1] 不全为零
-        if accumulation[1].sum() != 0:
-            predicted_token_ids_two = torch.topk(accumulation[1], WINDOW, dim=-1).indices[0]
-            predicted_scores_two = torch.topk(accumulation[1], WINDOW, dim=-1).values[0]
-            predicted_tokens_two = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_two)
-            predicted_tokens_two = [token.replace("▁", "") for token in predicted_tokens_two]
-            predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_two,predicted_scores,predicted_scores_two)
-        if accumulation[2].sum() != 0:
-            predicted_token_ids_three = torch.topk(accumulation[2], WINDOW, dim=-1).indices[0]
-            predicted_scores_three = torch.topk(accumulation[2], WINDOW, dim=-1).values[0]
-            predicted_tokens_three = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_three)
-            predicted_tokens_three = [token.replace("▁", "") for token in predicted_tokens_three]
-            predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_three,predicted_scores,predicted_scores_three)
-        if accumulation[3].sum() != 0:
-            predicted_token_ids_four = torch.topk(accumulation[3], WINDOW, dim=-1).indices[0]
-            predicted_scores_four = torch.topk(accumulation[3], WINDOW, dim=-1).values[0]
-            predicted_tokens_four = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_four)
-            predicted_tokens_four = [token.replace("▁", "") for token in predicted_tokens_four]
-            predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_four,predicted_scores,predicted_scores_four)
-        if accumulation[4].sum() != 0:
-            predicted_token_ids_five = torch.topk(accumulation[4], WINDOW, dim=-1).indices[0]
-            predicted_scores_five = torch.topk(accumulation[4], WINDOW, dim=-1).values[0]
-            predicted_tokens_five = self.tokenizer.convert_ids_to_tokens(predicted_token_ids_five)
-            predicted_tokens_five = [token.replace("▁", "") for token in predicted_tokens_five]
-            predicted_tokens,predicted_scores = cross(predicted_tokens,predicted_tokens_five,predicted_scores,predicted_scores_five)
-
-        TTEMP = []
-        for j in predicted_tokens:
-            if IS_levenshtein_distance_and_operations(Target,j):
-                TTEMP.append(j)
-        return TTEMP
+        # 按照accumulation的值进行排序，将按照分数从高到低的顺序添加到TTTEMP中
+        TTTEMP = []
+        for i in range(len(candidate)-2):
+            if candidate[i] in accumulation:
+                accumulation[candidate[i]] += score[i]
+            else:
+                accumulation[candidate[i]] = score[i]
+        for key, value in sorted(accumulation.items(), key=lambda item: item[1],reverse=True):
+            if IS_levenshtein_distance_and_operations(Target,key):
+                TTTEMP.append(key)
+        return TTTEMP
         
 
 
