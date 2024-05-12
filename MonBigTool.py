@@ -62,11 +62,14 @@ class MonBigTool:
         self.errW = None
 
 
+
     def getMASK(self):
         if self.MASK is None:
             with open('mask.pickle', 'rb') as f:
                 self.MASK = pickle.load(f)
-        return self.MASK
+        return self.MASK.copy()
+    
+    
     def getWordsDict(self):
         if self.wordsDict is None:
             with open('wordsDict.pickle', 'rb') as f:
@@ -397,8 +400,8 @@ class MASKmodel:
             else:
                 accumulation[candidate[i]] = score[i]
         for key, value in sorted(accumulation.items(), key=lambda item: item[1],reverse=True):
-            if IS_levenshtein_distance_and_operations(Target,key):
-                TTTEMP.append(key)
+            # if IS_levenshtein_distance_and_operations(Target,key):
+            TTTEMP.append(key)
         return TTTEMP
         
 
