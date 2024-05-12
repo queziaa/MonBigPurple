@@ -241,6 +241,8 @@ class MASKmodel:
         # self.model = AutoModelForMaskedLM.from_pretrained("FacebookAI/xlm-roberta-base")
 
 #       蒙古人 发表 模型 有论文  2000-3500
+        print(type(MODELNAME))
+
         self.tokenizer = AutoTokenizer.from_pretrained(MODELNAME, use_fast=False)
         self.model = AutoModelForMaskedLM.from_pretrained(MODELNAME)
 
