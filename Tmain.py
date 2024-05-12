@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 MODELNAME = '/home/imu_tzt1/ddn/jinyimiao/HomeWork/MonBigPurple'
 
 import random
