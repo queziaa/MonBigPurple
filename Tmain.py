@@ -1,4 +1,4 @@
-MODELNAME = 'tugstugi/bert-large-mongolian-uncased'
+MODELNAME = '/home/imu_tzt1/ddn/jinyimiao/HomeWork/MonBigPurple'
 
 import random
 from tqdm import tqdm
