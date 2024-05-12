@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-MODELNAME = '/home/imu_tzt1/ddn/jinyimiao/HomeWork/MonBigPurple'
+MODELNAME = './mongolian'
 
 import random
 from tqdm import tqdm
