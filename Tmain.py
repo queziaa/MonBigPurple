@@ -1,16 +1,17 @@
+MODELNAME = 'tugstugi/bert-large-mongolian-uncased'
+
 import random
 from tqdm import tqdm
 from MonBigTool import IS_levenshtein_distance_and_operations
 from MonBigTool import levenshtein_distance_and_operations
 from MonBigTool import MonBigTool,MASKmodel
 
-mASKmodel = MASKmodel()
+mASKmodel = MASKmodel(MODELNAME)
 monBigTool = MonBigTool()
 WordsDict = monBigTool.getWordsDict()
 
-
 from transformers import AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained('tugstugi/bert-large-mongolian-uncased', use_fast=False)
+tokenizer = AutoTokenizer.from_pretrained(MODELNAME, use_fast=False)
 
 texts = []
 labels = []
@@ -110,7 +111,7 @@ class SpellingErrorDataset(Dataset):
             'attention_mask': encoding['attention_mask'].flatten(),
             'labels': torch.tensor(labels, dtype=torch.long)
         }
-tokenizer = AutoTokenizer.from_pretrained('tugstugi/bert-large-mongolian-uncased', use_fast=False)
+tokenizer = AutoTokenizer.from_pretrained(MODELNAME, use_fast=False)
 # tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 # 创建分词器
 
@@ -124,7 +125,7 @@ test_dataset = dataset
 from transformers import BertForTokenClassification, Trainer, TrainingArguments
 
 # 加载预训练模型，指定要进行分类的类别数量
-model = BertForTokenClassification.from_pretrained('tugstugi/bert-large-mongolian-uncased', num_labels=2)
+model = BertForTokenClassification.from_pretrained(MODELNAME, num_labels=2)
 
 # 定义训练参数
 training_args = TrainingArguments(

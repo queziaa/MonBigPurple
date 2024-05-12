@@ -175,7 +175,7 @@ import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForMaskedLM
 
 class MASKmodel:
-    def __init__(self):
+    def __init__(self,MODELNAME):
 
 
 
@@ -241,8 +241,8 @@ class MASKmodel:
         # self.model = AutoModelForMaskedLM.from_pretrained("FacebookAI/xlm-roberta-base")
 
 #       蒙古人 发表 模型 有论文  2000-3500
-        self.tokenizer = AutoTokenizer.from_pretrained('tugstugi/bert-large-mongolian-uncased', use_fast=False)
-        self.model = AutoModelForMaskedLM.from_pretrained('tugstugi/bert-large-mongolian-uncased')
+        self.tokenizer = AutoTokenizer.from_pretrained(MODELNAME, use_fast=False)
+        self.model = AutoModelForMaskedLM.from_pretrained(MODELNAME)
 
         # pipe = pipeline(task="fill-mask", model=model, tokenizer=tokenizer,device= (0 if torch.cuda.is_available() else -1))
         # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
