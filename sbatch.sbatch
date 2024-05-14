@@ -33,7 +33,7 @@ SBATCH --mail-user=queziaa@163.com
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16G
 # 任务数
-SBATCH --ntasks=2
+# SBATCH --ntasks=2
 #SBATCH --cpus-per-task=3
 #srun ~/cuda_hello 
 
