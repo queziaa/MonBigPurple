@@ -82,6 +82,7 @@ class SpellingErrorDataset(Dataset):
         self.labels = labels
         self.tokenizer = tokenizer
         self.max_len = max_len
+        
 
     def __len__(self):
         return len(self.texts)
@@ -124,10 +125,14 @@ dataset = SpellingErrorDataset(texts, labels, tokenizer, max_len=32)
 train_dataset = dataset
 test_dataset = dataset
 
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 from transformers import BertForTokenClassification, Trainer, TrainingArguments
 
 # 加载预训练模型，指定要进行分类的类别数量
 model = BertForTokenClassification.from_pretrained(MODELNAME, num_labels=2)
+model.to(DEVICE)
 
 # 定义训练参数
 training_args = TrainingArguments(
@@ -150,3 +155,5 @@ trainer = Trainer(
 
 # 开始训练
 trainer.train()
+
+
