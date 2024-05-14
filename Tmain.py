@@ -126,6 +126,7 @@ train_dataset = dataset
 test_dataset = dataset
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print('-'*50)
 print("cuda" if torch.cuda.is_available() else "cpu")
 
 from transformers import BertForTokenClassification, Trainer, TrainingArguments
