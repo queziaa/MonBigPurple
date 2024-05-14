@@ -1,5 +1,5 @@
 #!/bin/bash
-SBATCH --partition=cnGPU #要申请的gpu节点
+SBATCH --partition=cnGPUtest #要申请的gpu节点
 SBATCH --job-name=JIN #任务名
 SBATCH -o JIN.out #正确输出
 SBATCH -e JIN.err #异常输出
