@@ -1,3 +1,22 @@
+在拼写纠错任务中，WER（Word Error Rate）和CER（Character Error Rate）是两个常用的性能指标，用于评估模型的纠错效果。
+
+WER（Word Error Rate）：
+
+定义：WER 是衡量系统输出与参考文本之间差异的指标，计算公式为：
+
+WER = (S + D + I) / N
+其中，S 是替换错误（substitutions），D 是删除错误（deletions），I 是插入错误（insertions），N 是参考文本中的单词总数。
+用途：WER 主要用于评估语音识别系统和文本纠错系统的性能，反映了系统在单词层面上的错误率。
+CER（Character Error Rate）：
+
+定义：CER 是衡量系统输出与参考文本之间差异的指标，计算公式为：
+
+CER = (S + D + I) / N
+其中，S 是替换错误（substitutions），D 是删除错误（deletions），I 是插入错误（insertions），N 是参考文本中的字符总数。
+用途：CER 主要用于评估文本纠错系统的性能，反映了系统在字符层面上的错误率。
+这两个指标都用于量化模型的纠错能力，但侧重点不同：WER 关注单词层面的错误，而 CER 关注字符层面的错误。选择使用哪一个指标取决于具体应用场景和需求。
+
+
 https://spellcheck.gov.mn/
 
 @ https://huggingface.co/bayartsogt/mongolian-gpt2
