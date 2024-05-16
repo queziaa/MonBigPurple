@@ -7,6 +7,8 @@ from tqdm import tqdm
 from MonBigTool import IS_levenshtein_distance_and_operations
 from MonBigTool import levenshtein_distance_and_operations
 from MonBigTool import MonBigTool,MASKmodel
+import numpy as np
+from sklearn.metrics import accuracy_score
 
 mASKmodel = MASKmodel(MODELNAME)
 monBigTool = MonBigTool()
@@ -158,3 +160,16 @@ trainer = Trainer(
 trainer.train()
 
 
+# 使用 predict 方法进行预测
+predictions = trainer.predict(test_dataset)
+
+# 获取预测结果
+preds = predictions.predictions.argmax(-1)
+
+
+# 保存结果
+np.save('preds.npy', preds)
+np.save('labels.npy', labels)
+# 计算准确率
+accuracy = accuracy_score(labels, preds)
+print(accuracy)
