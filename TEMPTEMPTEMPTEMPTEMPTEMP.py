@@ -6,7 +6,8 @@ from MonBigTool import colon,process_list
 from MonBigTool import MonBigTool,MASKmodel 
 # WordsDict = monBigTool.getWordsDict()
 # MODELNAME = 'tugstugi/bert-large-mongolian-uncased'
-MODELNAME = '.mongolian'
+MODELNAME = './mongolian'
+
 
 class MonBigPurple():
     def __init__(self):
