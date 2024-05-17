@@ -1,3 +1,5 @@
+# 内容已经全部迁移至MonBigTool
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!
 # train_spell_error.txt
 # train_clean.txt
 spell_error = open("train_spell_error.txt", "r")
