@@ -414,9 +414,9 @@ def cross(Alist, Blist, Ascor, Bscor):
     #Softmax 
 
     if isinstance(Ascor, torch.Tensor):
-        Ascor = Ascor.numpy()
+        Ascor = Ascor.cpu().numpy()
     if isinstance(Bscor, torch.Tensor):
-        Bscor = Bscor.numpy()
+        Bscor = Bscor.cpu().numpy()
 # softmax
     Ascor = [math.exp(i) for i in Ascor]
     Bscor = [math.exp(i) for i in Bscor]
