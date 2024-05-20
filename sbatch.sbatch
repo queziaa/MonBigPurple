@@ -4,7 +4,7 @@
 #SBATCH -o JIN.out #正确输出
 #SBATCH -e JIN.err #异常输出
 #SBATCH --gres=gpu:1 #GPU卡数
-#SBATCH --cpus-per-gpu=3 #每个GPU卡分配的cpu数⽬
+#SBATCH --cpus-per-gpu=1 #每个GPU卡分配的cpu数⽬
 srun env | grep CUDA #在Test%j.out中看到分配到的GPU卡的编号
 srun python TEMPTEMPTEMPTEMPTEMPTEMP.py #如果是python脚本，⽤这种写法
 
