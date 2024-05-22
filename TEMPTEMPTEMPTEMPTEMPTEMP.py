@@ -75,26 +75,26 @@ class MonBigPurple():
         #         # print(g[0],g[1],te)
         # ########################################
 
-        SecondaryTreatment = []
+        # SecondaryTreatment = [0]
+        # if self.fineTuningClass != None:
+        #     SecondaryTreatment = self.fineTuningClasspredict.predict(fsen)
+        # # else:
+        # temp = self.mASKmodel.tomask(fsen,self.WINDOW,False)
+        # for i in range(len(fsen)):
+        #     if not fsen[i].isalpha():
+        #         continue
+        #     if fsen[i] in temp[i] :
+        #         continue
+        #     if self.monBigTool.mysterious(fsen[i]):
+        #         continue
+        #     # if i in inode:
+        #     #     LOSS_O_T += 1
+        #     #     inode.remove(i)
+        #     # else:
+        #     #     LOSS_O_F += 1
+        #     SecondaryTreatment.append(i)
 
-
-        if self.fineTuningClass != None:
-            SecondaryTreatment = self.fineTuningClasspredict.predict(fsen)
-        else:
-            temp = self.mASKmodel.tomask(fsen,self.WINDOW,False)
-            for i in range(len(fsen)):
-                if not fsen[i].isalpha():
-                    continue
-                if fsen[i] in temp[i] :
-                    continue
-                if self.monBigTool.mysterious(fsen[i]):
-                    continue
-                # if i in inode:
-                #     LOSS_O_T += 1
-                #     inode.remove(i)
-                # else:
-                #     LOSS_O_F += 1
-                SecondaryTreatment.append(i)
+        SecondaryTreatment = [i for i in range(len(fsen))]
 
         
         # LOSS_O_MISS += len(inode)
@@ -103,6 +103,7 @@ class MonBigPurple():
         # print('MASK----',' '.join(sen),'----')
         # print('怀疑----',SecondaryTreatment,'----',inode)
         OUT = []
+        print(SecondaryTreatment)
         for i in SecondaryTreatment:
             candidate,score = self.monBigTool.FuzzySearch(fsen[i])
             Target = fsen[i]
@@ -152,7 +153,7 @@ class MonBigPurple():
         #     print('O_F:',LOSS_O_F)
         #     print('O_MISS:',LOSS_O_MISS)
         # print('PError:',LOSS_PError)
-        # print('PMiss:',LOSS_PMiss)
+        # print('PMiss:',LOSS_PMiss)|
         # print('PTrue:',LOSS_PTrue)
         # print('PTrue_succFix:',LOSS_PTrue_succFix)
         # print('PTrue_errFix:',LOSS_PTrue_errFix)
@@ -161,8 +162,7 @@ class MonBigPurple():
 
 
 
-
-te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-500')
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-5000')
 test_spell = open("test_spell_error.txt", "r")
 test_spell = test_spell.read().split("\n")
 OUT = []
@@ -185,112 +185,6 @@ for i in tqdm(range(len(test_spell))):
     print(test_spell[i])
     print('-----------------')    
 
-with open('test_spell_error_out_500.txt', 'w') as f:
+with open('test_spell_error_out_EEEEE.txt', 'w') as f:
     for item in OUT:
         f.write("%s\n" % item)
-
-
-
-
-
-
-
-te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-1500')
-test_spell = open("test_spell_error.txt", "r")
-test_spell = test_spell.read().split("\n")
-OUT = []
-
-
-for i in tqdm(range(len(test_spell))):
-    temp = process_list(test_spell[i])
-    temp = colon(temp)
-    predict = te.predict(temp)
-    for j in predict:
-        t = j['t']
-        ii = j['i']
-
-        temp[ii] = t
-    temp = ' '.join(temp)
-    temp = temp.replace(' : ',': ')
-    OUT.append(temp)
-    print('-----------------')    
-    print(temp)
-    print(test_spell[i])
-    print('-----------------')    
-
-with open('test_spell_error_out_1500.txt', 'w') as f:
-    for item in OUT:
-        f.write("%s\n" % item)
-
-
-
-
-
-te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-4000')
-test_spell = open("test_spell_error.txt", "r")
-test_spell = test_spell.read().split("\n")
-OUT = []
-
-
-for i in tqdm(range(len(test_spell))):
-    temp = process_list(test_spell[i])
-    temp = colon(temp)
-    predict = te.predict(temp)
-    for j in predict:
-        t = j['t']
-        ii = j['i']
-
-        temp[ii] = t
-    temp = ' '.join(temp)
-    temp = temp.replace(' : ',': ')
-    OUT.append(temp)
-    print('-----------------')    
-    print(temp)
-    print(test_spell[i])
-    print('-----------------')    
-
-with open('test_spell_error_out_4000.txt', 'w') as f:
-    for item in OUT:
-        f.write("%s\n" % item)
-
-
-
-
-
-
-
-te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-7500')
-test_spell = open("test_spell_error.txt", "r")
-test_spell = test_spell.read().split("\n")
-OUT = []
-
-
-for i in tqdm(range(len(test_spell))):
-    temp = process_list(test_spell[i])
-    temp = colon(temp)
-    predict = te.predict(temp)
-    for j in predict:
-        t = j['t']
-        ii = j['i']
-
-        temp[ii] = t
-    temp = ' '.join(temp)
-    temp = temp.replace(' : ',': ')
-    OUT.append(temp)
-    print('-----------------')    
-    print(temp)
-    print(test_spell[i])
-    print('-----------------')    
-
-with open('test_spell_error_out_7500.txt', 'w') as f:
-    for item in OUT:
-        f.write("%s\n" % item)
-
-
-
-
-# checkpoint-1000/ checkpoint-2500/ checkpoint-4000/ checkpoint-5000/ checkpoint-6500/ checkpoint-8000/
-# checkpoint-1500/ checkpoint-3000/ checkpoint-4500/ checkpoint-5500/ checkpoint-7000/ 
-# checkpoint-2000/ checkpoint-3500/ checkpoint-500/  checkpoint-6000/ checkpoint-7500/ 
-
-
