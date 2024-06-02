@@ -28,6 +28,7 @@ class fineTuningClass():
         sen = sentence.split()
         Tindex = 0
         SecondaryTreatment = []
+        
         for j in range(len(sen)):
             aAaaa = tokenizer.tokenize(sen[j])
             # print(sen[j],len(aAaaa),predictions[0][Tindex:Tindex+len(aAaaa)])
@@ -46,34 +47,15 @@ class MonBigPurple():
         self.monBigTool = MonBigTool()
         self.MASK = self.monBigTool.getMASK()
         self.fineTuningClass = fineTuningClass
-        if self.fineTuningClass != None:
-            self.fineTuningClasspredict = fineTuningClass(fineFile,self.mASKmodel.tokenizer)
+        # if self.fineTuningClass != None:
+            # self.fineTuningClasspredict = fineTuningClass(fineFile,self.mASKmodel.tokenizer)
 
-        # self.LOSS_PScore = 0
-        # self.LOSS_PError = 0
-        # self.LOSS_PMiss = 0
-        # self.LOSS_PTrue = 0
-        # self.LOSS_PTrue_errFix = 0
-        # self.LOSS_PTrue_succFix = 0
-        # self.LOSS_O_T = 0
-        # self.LOSS_O_F = 0
-        # self.LOSS_O_MISS = 0
+
     
     def predict(self,fsen):
 
         # inode,tsen,fsen,sen,freq,pairs = monBigTool.Decode(i)
 
-        # ########################################
-        # # 得到词对 信息  ########################
-        # for g in pairs:
-        #     if not g[0].isalpha():
-        #         continue
-
-
-        #     # te = monBigTool.letterSim(g[0],g[1])
-        #     # if te < 0.8:
-        #         # print(g[0],g[1],te)
-        # ########################################
 
         # SecondaryTreatment = [0]
         # if self.fineTuningClass != None:
@@ -96,12 +78,6 @@ class MonBigPurple():
 
         SecondaryTreatment = [i for i in range(len(fsen))]
 
-        
-        # LOSS_O_MISS += len(inode)
-        # print('假----',' '.join(fsen),'----')
-        # print('真----',' '.join(tsen),'----')
-        # print('MASK----',' '.join(sen),'----')
-        # print('怀疑----',SecondaryTreatment,'----',inode)
         OUT = []
         print(SecondaryTreatment)
         for i in SecondaryTreatment:
@@ -112,53 +88,6 @@ class MonBigPurple():
                 continue
             OUT.append({'i':i,'f':Target,'t':TTEMP[0]})
         return OUT
-            # TTEMP = candidate
-        #     print('目标',Target,':  候选',candidate)
-        #     print('结果:',TTEMP)
-
-
-        #     if len(TTEMP) == 0:
-        #         continue
-
-        #     if fsen[i] == TTEMP[0]:
-        #         continue
-        
-        #     if i not in inode:
-        #         LOSS_PError += 1
-        #         print('*ERR'*20)
-        #         print(Target,TTEMP)
-        #     elif i in inode:
-        #         LOSS_PTrue += 1
-        #         inode.remove(i)
-        #         if tsen[i] == TTEMP[0]:
-        #             print('*SUCFix'*20)
-        #             LOSS_PTrue_succFix += 1
-        #         else:
-        #             print('*ERRFix'*20)
-        #             LOSS_PTrue_errFix += 1
-        #         print(Target,TTEMP)
-        
-        # LOSS_PMiss += len(inode)
-        # for i in inode:
-        #     print('@MISS'*20)
-        #     print('----',' '.join(fsen),'----')
-        #     print('----',' '.join(tsen),'----')
-        #     print('----',' '.join(sen),'----')
-        #     print(fsen[i])
-        #     print(fsen[i])
-
-        # if COUNT % 50 == 0:
-        # # print('-----------------')
-        #     print('O_T:',LOSS_O_T)
-        #     print('O_F:',LOSS_O_F)
-        #     print('O_MISS:',LOSS_O_MISS)
-        # print('PError:',LOSS_PError)
-        # print('PMiss:',LOSS_PMiss)|
-        # print('PTrue:',LOSS_PTrue)
-        # print('PTrue_succFix:',LOSS_PTrue_succFix)
-        # print('PTrue_errFix:',LOSS_PTrue_errFix)
-
-
 
 
 
