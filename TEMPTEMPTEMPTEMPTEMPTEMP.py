@@ -161,36 +161,379 @@ class MonBigPurple():
 
 
 
-for DDT in ['2000','2500','3000','3500','4500','5000','5500','6000','6500','7000','8000']:
-    te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-' + DDT)
-    test_spell = open("test_spell_error.txt", "r")
-    test_spell = test_spell.read().split("\n")
-    OUT = []
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-2500')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_2500.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
 
 
-    for i in tqdm(range(len(test_spell))):
-        temp = process_list(test_spell[i])
-        temp = colon(temp)
-        predict = te.predict(temp)
-        for j in predict:
-            t = j['t']
-            ii = j['i']
 
-            temp[ii] = t
-        temp = ' '.join(temp)
-        temp = temp.replace(' : ',': ')
-        OUT.append(temp)
-        print('-----------------')    
-        print(temp)
-        print(test_spell[i])
-        print('-----------------')    
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-3000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
 
-    with open('test_spell_error_out_' + DDT + '.txt', 'w') as f:
-        for item in OUT:
-            f.write("%s\n" % item)
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_3000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
 
 
 
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-3500')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_3500.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+
+
+
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-4000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_4000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-4500')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_4500.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-5000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_5000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-5500')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_5500.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+
+torch.cuda.empty_cache()
+
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-6000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_6000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-6500')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_6500.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-7000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_7000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+
+
+
+te = MonBigPurple(fineTuningClass,'./results_A/checkpoint-8000')
+test_spell = open("test_spell_error.txt", "r")
+test_spell = test_spell.read().split("\n")
+OUT = []
+for i in tqdm(range(len(test_spell))):
+    temp = process_list(test_spell[i])
+    temp = colon(temp)
+    predict = te.predict(temp)
+    for j in predict:
+        t = j['t']
+        ii = j['i']
+
+        temp[ii] = t
+    temp = ' '.join(temp)
+    temp = temp.replace(' : ',': ')
+    OUT.append(temp)
+    # print('-----------------')    
+    # print(temp)
+    # print(test_spell[i])
+    # print('-----------------')    
+
+with open('test_spell_error_out_8000.txt', 'w') as f:
+    for item in OUT:
+        f.write("%s\n" % item)
+
+# 销毁模型
+te = None
+import torch
+# 释放显存
+torch.cuda.empty_cache()
+
+
+# for DDT in ['2500','3000','3500','4500','5000','5500','6000','6500','7000','8000']:
 
 
 # checkpoint-1000/ checkpoint-2500/ checkpoint-4000/ checkpoint-5000/ checkpoint-6500/ checkpoint-8000/
